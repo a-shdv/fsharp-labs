@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "UWWOoBGEIvchw6qkjolO+6nfd7/ExleEmNU3qa5xDSqccS2JR3zmJaeRh7lp+xg88fWgSFTT65F63SmEGputgw==",
+  "success": true,
+  "projectFilePath": "/Users/a-shdv/RiderProjects/FP/Lab6/Lab6.fsproj",
+  "expectedPackageFiles": [
+    "/Users/a-shdv/.nuget/packages/fsharp.core/7.0.0/fsharp.core.7.0.0.nupkg.sha512",
+    "/Users/a-shdv/.nuget/packages/microsoft.win32.systemevents/8.0.0-rc.2.23479.6/microsoft.win32.systemevents.8.0.0-rc.2.23479.6.nupkg.sha512",
+    "/Users/a-shdv/.nuget/packages/system.drawing.common/8.0.0-rc.2.23479.14/system.drawing.common.8.0.0-rc.2.23479.14.nupkg.sha512"
+  ],
+  "logs": []
+}

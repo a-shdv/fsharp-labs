@@ -1,0 +1,124 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v7.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v7.0": {
+      "Lab6/1.0.0": {
+        "dependencies": {
+          "FSharp.Core": "7.0.0",
+          "System.Drawing.Common": "8.0.0-rc.2.23479.14"
+        },
+        "runtime": {
+          "Lab6.dll": {}
+        }
+      },
+      "FSharp.Core/7.0.0": {
+        "runtime": {
+          "lib/netstandard2.1/FSharp.Core.dll": {
+            "assemblyVersion": "7.0.0.0",
+            "fileVersion": "7.0.22.51310"
+          }
+        },
+        "resources": {
+          "lib/netstandard2.1/cs/FSharp.Core.resources.dll": {
+            "locale": "cs"
+          },
+          "lib/netstandard2.1/de/FSharp.Core.resources.dll": {
+            "locale": "de"
+          },
+          "lib/netstandard2.1/es/FSharp.Core.resources.dll": {
+            "locale": "es"
+          },
+          "lib/netstandard2.1/fr/FSharp.Core.resources.dll": {
+            "locale": "fr"
+          },
+          "lib/netstandard2.1/it/FSharp.Core.resources.dll": {
+            "locale": "it"
+          },
+          "lib/netstandard2.1/ja/FSharp.Core.resources.dll": {
+            "locale": "ja"
+          },
+          "lib/netstandard2.1/ko/FSharp.Core.resources.dll": {
+            "locale": "ko"
+          },
+          "lib/netstandard2.1/pl/FSharp.Core.resources.dll": {
+            "locale": "pl"
+          },
+          "lib/netstandard2.1/pt-BR/FSharp.Core.resources.dll": {
+            "locale": "pt-BR"
+          },
+          "lib/netstandard2.1/ru/FSharp.Core.resources.dll": {
+            "locale": "ru"
+          },
+          "lib/netstandard2.1/tr/FSharp.Core.resources.dll": {
+            "locale": "tr"
+          },
+          "lib/netstandard2.1/zh-Hans/FSharp.Core.resources.dll": {
+            "locale": "zh-Hans"
+          },
+          "lib/netstandard2.1/zh-Hant/FSharp.Core.resources.dll": {
+            "locale": "zh-Hant"
+          }
+        }
+      },
+      "Microsoft.Win32.SystemEvents/8.0.0-rc.2.23479.6": {
+        "runtime": {
+          "lib/net7.0/Microsoft.Win32.SystemEvents.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.47906"
+          }
+        },
+        "runtimeTargets": {
+          "runtimes/win/lib/net7.0/Microsoft.Win32.SystemEvents.dll": {
+            "rid": "win",
+            "assetType": "runtime",
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.47906"
+          }
+        }
+      },
+      "System.Drawing.Common/8.0.0-rc.2.23479.14": {
+        "dependencies": {
+          "Microsoft.Win32.SystemEvents": "8.0.0-rc.2.23479.6"
+        },
+        "runtime": {
+          "lib/net7.0/System.Drawing.Common.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.23.47914"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Lab6/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "FSharp.Core/7.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-2bjhh/usYIj6o6LCikhKgwT9BxTWhhgPyTUrX8l+XO21GhW8d+QrN/XxjN/yxLBvzc/xp7vGWTK/7HwSVFjamg==",
+      "path": "fsharp.core/7.0.0",
+      "hashPath": "fsharp.core.7.0.0.nupkg.sha512"
+    },
+    "Microsoft.Win32.SystemEvents/8.0.0-rc.2.23479.6": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-t83wew4bAz1UTsbLX8CQhJEY0+Q40xN1/yKJ0RL8Bphjk/KzK/jjc5+CdPnJGP4oLlTmo5p5jZp3NnrQ6V/cAw==",
+      "path": "microsoft.win32.systemevents/8.0.0-rc.2.23479.6",
+      "hashPath": "microsoft.win32.systemevents.8.0.0-rc.2.23479.6.nupkg.sha512"
+    },
+    "System.Drawing.Common/8.0.0-rc.2.23479.14": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-kdIRPl2+A6F6QxV48fF1dXvB2+K+5nDuKxhYydgT8X7HWpCnlr2CKptzyKMkXOGFAXOFsiNByr4LBWWLOqOfYA==",
+      "path": "system.drawing.common/8.0.0-rc.2.23479.14",
+      "hashPath": "system.drawing.common.8.0.0-rc.2.23479.14.nupkg.sha512"
+    }
+  }
+}

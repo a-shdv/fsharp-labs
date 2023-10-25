@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "X8ominizlR2zat6rZyhSDz2A8ibvxwfdOK5NUcws4VfCcFShdgglFfiWA79W/ttMdGAQw1kdDja6IiwyB/8vGA==",
+  "success": true,
+  "projectFilePath": "/Users/a-shdv/RiderProjects/FP/Lab4/Lab4.fsproj",
+  "expectedPackageFiles": [
+    "/Users/a-shdv/.nuget/packages/fsharp.core/7.0.0/fsharp.core.7.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

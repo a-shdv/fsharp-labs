@@ -1,4 +1,7 @@
-﻿open System.IO
+﻿// Для текстового файла найти самое часто встречающееся
+// словосочетание
+
+open System.IO
 open System.Text.RegularExpressions
 
 // Функция для извлечения слов из текста
@@ -6,7 +9,11 @@ let splitTextIntoWords (text: string) =
     let pattern = @"\w+"
     let regex = new Regex(pattern)
     let matches = regex.Matches(text)
-    seq { for m in matches do yield m.Value }
+
+    seq {
+        for m in matches do
+            yield m.Value
+    }
 
 // Функция для подсчета слов или словосочетаний
 let countWords (words: seq<string>) =
@@ -20,13 +27,15 @@ let findMostFrequentPhrase (filename: string) =
     let words = splitTextIntoWords text
     let wordCounts = countWords words
     let sortedWordCounts = Seq.sortBy (fun (_, count) -> -count) wordCounts
+
     match Seq.tryHead sortedWordCounts with
-    | Some (word, count) -> Some (word, count)
+    | Some(word, count) -> Some(word, count)
     | None -> None
 
 // let mostFrequentPhrase = findMostFrequentPhrase "/Users/a-shdv/RiderProjects/FP/Lab2/war-n-peace.txt"
-let mostFrequentPhrase = findMostFrequentPhrase "/Users/a-shdv/RiderProjects/FP/Lab2/bible.txt"
+let mostFrequentPhrase =
+    findMostFrequentPhrase "/Users/a-shdv/RiderProjects/FP/Lab2/bible.txt"
 
 match mostFrequentPhrase with
-| Some (phrase, count) -> printfn "Самое часто встречающееся словосочетание: %s (%d раз)" phrase count
+| Some(phrase, count) -> printfn "Самое часто встречающееся словосочетание: %s (%d раз)" phrase count
 | None -> printfn "Текстовый файл пуст или не найден"
