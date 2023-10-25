@@ -1,6 +1,4 @@
-﻿module Lab2.Program
-
-open System.IO
+﻿open System.IO
 open System.Text.RegularExpressions
 
 // Функция для извлечения слов из текста
@@ -26,7 +24,8 @@ let findMostFrequentPhrase (filename: string) =
     | Some (word, count) -> Some (word, count)
     | None -> None
 
-let mostFrequentPhrase = findMostFrequentPhrase "/Users/a-shdv/RiderProjects/FP/Lab2/text.txt"
+// let mostFrequentPhrase = findMostFrequentPhrase "/Users/a-shdv/RiderProjects/FP/Lab2/war-n-peace.txt"
+let mostFrequentPhrase = findMostFrequentPhrase "/Users/a-shdv/RiderProjects/FP/Lab2/bible.txt"
 
 match mostFrequentPhrase with
 | Some (phrase, count) -> printfn "Самое часто встречающееся словосочетание: %s (%d раз)" phrase count

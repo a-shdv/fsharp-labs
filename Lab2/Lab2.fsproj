@@ -7,8 +7,8 @@
 
     <ItemGroup>
         <Compile Include="Program.fs"/>
-        <Content Include="text.txt" />
-        <Compile Include="FirstTry.fs" />
+        <Content Include="war-n-peace.txt" />
+        <Content Include="bible.txt" />
     </ItemGroup>
 
 </Project>
