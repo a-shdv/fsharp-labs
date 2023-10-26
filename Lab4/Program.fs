@@ -1,108 +1,83 @@
-﻿// Клиентский отдел банка
+﻿type IAccountManagement =
+    abstract member OpenAccount : string -> decimal -> unit
+    abstract member CloseAccount : string -> unit
+    abstract member Deposit : string -> decimal -> unit
+    abstract member Withdraw : string -> decimal -> unit
 
-open System
+type IBankCustomer =
+    abstract member GetName : string
+    abstract member GetId : string
 
+type BankCustomer(name: string, id: string) =
+    interface IBankCustomer with
+        member this.GetName = name
+        member this.GetId = id
 
-type Bank(name, address, phone) as self =
-    do
-        self.name <- name
-        self.address <- address
-        self.phone <- phone
+type BankEmployee(name: string, id: string) =
+    inherit BankCustomer(name, id)
 
-    new() = Bank(null, null, null)
+type BankAccount(accountId: string, initialBalance: decimal ref) =
+    member this.GetAccountId = accountId
+    member this.GetBalance = initialBalance
+    
+    new() = BankAccount(null, ref 0.0M)
+    
+    interface IAccountManagement with
+        member this.OpenAccount (accountId: string) (initialBalance: decimal) =
+            printfn "Открыт новый счет %s" accountId
+        member this.CloseAccount (accountId: string) =
+            printfn "Счет %s закрыт" accountId
+        member this.Deposit (accountId: string) (amount: decimal) =
+            this.GetBalance := !this.GetBalance + amount
+            printfn "На счет %s зачислено %.2f" accountId amount
+        member this.Withdraw (accountId: string) (amount: decimal) =
+            if amount <= !this.GetBalance then
+                this.GetBalance := !this.GetBalance - amount
+                printfn "Со счета %s снято %.2f" accountId amount
+            else
+                printfn "Недостаточно средств на счете %s" accountId
 
-    [<DefaultValue>]
-    val mutable name: string
+// Класс, представляющий клиентский отдел банка
+type BankCustomerDepartment() =
+    let customers = System.Collections.Generic.Dictionary<string, IBankCustomer>()
 
-    [<DefaultValue>]
-    val mutable address: string
+    member this.AddCustomer (customer: IBankCustomer) =
+        customers.Add(customer.GetId, customer)
+        printfn "Добавлен новый клиент: %s" customer.GetName
 
-    [<DefaultValue>]
-    val mutable phone: string
+    member this.GetCustomer (customerId: string) =
+        if customers.ContainsKey(customerId) then
+            Some(customers.[customerId])
+        else
+            None
 
-    member _.ToString = name + " is located on " + address + ". Contact us: " + phone
+    member this.OpenAccountForCustomer (customer: IBankCustomer) (accountId: string) (initialBalance: decimal ref) =
+        match this.GetCustomer(customer.GetId) with
+        | Some(customer) ->
+            printfn "Открывается счет для клиента: %s" customer.GetName
+            let account = BankAccount(accountId, initialBalance)
+            account :> IAccountManagement
+        | None ->
+            printfn "Клиент с ID %s не найден" customer.GetId
+            let account = BankAccount()
+            account :> IAccountManagement
 
+// Пример использования
+let customer1 = BankCustomer("Иванов Иван", "12345")
+let customer2 = BankEmployee("Петров Петр", "67890")
 
-[<AbstractClass>]
-type Client(first_name, last_name, birth_date) as self =
-    do
-        self.first_name <- first_name
-        self.last_name <- last_name
-        self.birth_date <- birth_date
+let department = BankCustomerDepartment()
+department.AddCustomer customer1
+department.AddCustomer customer2
+printf "\n"
 
-    [<DefaultValue>]
-    val mutable first_name: String
+let initialBalance1 = ref 1000.0M
+let customer1Account = department.OpenAccountForCustomer customer1 "A123" initialBalance1
+customer1Account.Deposit "A123" 500.0M
+customer1Account.Withdraw "A123" 200.0M
+printf "\n"
 
-    [<DefaultValue>]
-    val mutable last_name: String
-
-    [<DefaultValue>]
-    val mutable birth_date: DateTime
-
-    member _.ToString =
-        "Client of the bank: "
-        + first_name
-        + " "
-        + last_name
-        + ". Born at "
-        + birth_date.ToString("dd-MM-yyyy")
-
-
-type ForeignClient(first_name, last_name, birth_date, country, id_number) as self =
-    inherit Client(first_name, last_name, birth_date)
-
-    do
-        self.country <- country
-        self.id_number <- id_number
-
-    [<DefaultValue>]
-    val mutable country: string
-
-    [<DefaultValue>]
-    val mutable id_number: int
-
-    member _.ToString =
-        base.ToString
-        + ". Foreigner with country: "
-        + country
-        + ". And id_number is "
-        + id_number.ToString()
-
-
-
-type IndividualClient(first_name, last_name, birth_date, registration, passport_info) as self =
-    inherit Client(first_name, last_name, birth_date)
-
-    [<DefaultValue>]
-    val mutable registration: string
-
-    [<DefaultValue>]
-    val mutable passport_info: int
-
-    do
-        self.registration <- registration
-        self.passport_info <- passport_info
-
-    member _.ToString =
-        base.ToString
-        + ". Registrated on "
-        + self.registration
-        + ". Passport information "
-        + self.passport_info.ToString()
-
-
-[<EntryPoint>]
-let main argv =
-    let local_bank = Bank("Sberbank", "Ulyanovsk, Kamyshinskaya st, 4A", "+249028902")
-    printfn "%s" local_bank.ToString
-
-    let foreign_client =
-        ForeignClient("Deutsche Bank", "Alexanderstraße 5", DateTime.Parse("2023-01-01"), "Germany", 9823497)
-
-    let individual =
-        IndividualClient("Ivan", "Ivanov", DateTime.Parse("1970-01-01"), "Moscow, Tverskaya st.", 9878767)
-
-    printfn "%s" foreign_client.ToString
-    printfn "%s" individual.ToString
-
-    0
+let initialBalance2 = ref 2000.0M
+let customer2Account = department.OpenAccountForCustomer customer2 "B456" initialBalance2
+customer2Account.CloseAccount "B456"
+printf "\n"

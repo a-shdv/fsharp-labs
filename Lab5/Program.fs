@@ -1,27 +1,24 @@
-﻿// Для массива текстовых файлов выполнить задание в парадигме параллельного программирования и сформировать единый выходной файл.
-// Для текстового файла изменить порядок слов на противоположный
-open System.IO
+﻿open System.IO
 
-let getFile file = file
-                  |> Seq.toList
-                  |> List.rev
-             
+let reverseWordOrder (line: string) =
+    let words = line.Split([|' '|])
+    let reversedWords = Array.rev words
+    String.concat " " reversedWords
 
-let spl(str:char list) = str
-                      |> Seq.toList
-                      |> List.rev
-                      |> Seq.iter (printf "%A ")
-
-                  
 let data = 
-    Directory.GetFiles(@"/Users/a-shdv/RiderProjects/FP/Lab5/files", "*.txt")
-    |> Array.Parallel.map File.ReadAllText
-    |> Array.Parallel.map Seq.toList
-    |> Array.Parallel.map List.rev
-    |> Array.Parallel.iter spl
+    Directory.GetFiles("/Users/a-shdv/RiderProjects/FP/Lab5/files", "*.txt")
+    |> Array.Parallel.map (fun filePath -> File.ReadAllText(filePath))
+    |> Array.Parallel.map reverseWordOrder
 
 [<EntryPoint>]
 let main argv =
-    let lst = data
-    lst
-    0 
+    let outputPath = "/Users/a-shdv/RiderProjects/FP/Lab5/files/output.txt"
+    
+    let lines = data |> Array.toList
+
+    // Очистка файла
+    File.WriteAllText(outputPath, "")
+    
+    File.WriteAllLines(outputPath, lines)
+
+    0

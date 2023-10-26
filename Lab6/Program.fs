@@ -4,7 +4,7 @@ open System.Drawing.Drawing2D
 open System.Drawing.Imaging
 open System.IO
 
-
+// 9. –FF+FF+FF-, F -> F-F-F-F-F
 type Rule = char * char list
 type Grammar = Rule list
 
@@ -72,5 +72,5 @@ let main argv =
     let gr: Grammar = [ ('F', Array.toList (firstString.ToCharArray())) ]
     let lsys = NApply 5 gr (Array.toList (rule.ToCharArray()))
     let B = TurtleBitmapVisualizer 40.0 (Math.PI / 180.0 * 60.0) lsys
-    B.Save(@"/Users/a-shdv/RiderProjects/FP/Lab6/img")
+    B.Save(@"/Users/a-shdv/RiderProjects/FP/Lab6/img/image.jpg")
     0
