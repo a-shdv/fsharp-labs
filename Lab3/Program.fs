@@ -25,7 +25,7 @@ open Microsoft.FSharp.Collections
 
 [<EntryPoint>]
 let main argv =
-    let arr = [| 3; 7; 1; 5; 4 |]
+    let arr = [| 3; 1; 1; 7; 1; 5; 4 |]
 
     let max = arr |> Array.max
     let index = arr |> Array.findIndex (fun x -> x = max)
