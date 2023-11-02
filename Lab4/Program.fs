@@ -1,91 +1,66 @@
-﻿type IAccountManagement =
-    abstract member OpenAccount: string -> decimal -> unit
-    abstract member CloseAccount: string -> unit
-    abstract member Deposit: string -> decimal -> unit
-    abstract member Withdraw: string -> decimal -> unit
+﻿type Person(name: string, address: string, phoneNumber: string) =
+    member val Name = name with get, set
+    member val Address = address with get, set
+    member val PhoneNumber = phoneNumber with get, set
 
-type IBankCustomer =
-    abstract member Name: string
-    abstract member Id: string
+type ICustomerService =
+    abstract member Deposit: decimal -> decimal
+    abstract member Withdraw: decimal -> decimal
 
-type BankCustomer(name: string, id: string) =
-    interface IBankCustomer with
-        member this.Name = name
-        member this.Id = id
+type Customer
+    (name: string, address: string, phoneNumber: string, customerId: int, accountNumber: string, balance: decimal) =
+    inherit Person(name, address, phoneNumber)
+    member val CustomerId = customerId with get, set
+    member val AccountNumber = accountNumber with get, set
+    member val Balance = balance with get, set
 
-type BankEmployee(name: string, id: string, isHappy: bool) =
-    inherit BankCustomer(name, id)
-    let m_isHappy = isHappy
-    member this.isHappy = m_isHappy
+    interface ICustomerService with
+        member this.Deposit(amount: decimal) = this.Balance + amount
 
-type BankAccount(accountId: string, initialBalance: decimal ref) =
-    member this.AccountId = accountId
-    member this.Balance = initialBalance
+        member this.Withdraw(amount: decimal) = this.Balance - amount
 
-    new() = BankAccount(null, ref 0.0M)
+type IEmployeeService =
+    abstract member AssignTask: string -> seq<string> -> seq<string>
+    abstract member CompleteTask: string -> seq<string> -> seq<string>
 
-    interface IAccountManagement with
-        member this.OpenAccount (accountId: string) (initialBalance: decimal) =
-            printfn "Открыт новый счет %s" accountId
+type Employee(name: string, address: string, phoneNumber: string, employeeId: int, position: string, tasks: seq<string>)
+    =
+    inherit Person(name, address, phoneNumber)
+    member val EmployeeId = employeeId with get, set
+    member val Position = position with get, set
+    member val Tasks = tasks with get, set
 
-        member this.CloseAccount(accountId: string) = printfn "Счет %s закрыт" accountId
+    interface IEmployeeService with
+        member this.AssignTask (task: string) (tasks: seq<string>) = Seq.append tasks (seq { yield task })
 
-        member this.Deposit (accountId: string) (amount: decimal) =
-            this.Balance := !this.Balance + amount
-            printfn "На счет %s зачислено %.2f" accountId amount
+        member this.CompleteTask (taskId: string) (tasks: seq<string>) =
+            tasks |> Seq.filter (fun task -> task <> taskId)
 
-        member this.Withdraw (accountId: string) (amount: decimal) =
-            if amount <= !this.Balance then
-                this.Balance := !this.Balance - amount
-                printfn "Со счета %s снято %.2f" accountId amount
-            else
-                printfn "Недостаточно средств на счете %s" accountId
 
-// Класс, представляющий клиентский отдел банка
-type BankCustomerDepartment() =
-    let customers = System.Collections.Generic.Dictionary<string, IBankCustomer>()
+[<EntryPoint>]
+let main argv =
+    (* Клиент *)
+    let customer =
+        Customer("Тестовый Тест Тестович", "ул. Тестовая", "8 (987) 654-43-21", 1, "A123", 0.0m)
 
-    member this.AddCustomer(customer: IBankCustomer) =
-        customers.Add(customer.Id, customer)
-        printfn "Добавлен новый клиент: %s" customer.Name
+    (* Клиент - депозит *)
+    let depositBalance = (customer :> ICustomerService).Deposit 100.0m
+    customer.Balance <- depositBalance
+    printfn "Зачисление..."
+    printfn "Счет клиента %d, номер счета %s: %M\n" customer.CustomerId customer.AccountNumber customer.Balance
 
-    member this.GetCustomer(customerId: string) =
-        if customers.ContainsKey(customerId) then
-            Some(customers.[customerId])
-        else
-            None
+    (* Клиент - списание *)
+    let withdrawBalance = (customer :> ICustomerService).Withdraw 25.0m
+    customer.Balance <- withdrawBalance
+    printfn "Списание..."
+    printfn "Счет клиента %d, номер счета %s: %M\n" customer.CustomerId customer.AccountNumber customer.Balance
 
-    member this.OpenAccountForCustomer (customer: IBankCustomer) (accountId: string) (initialBalance: decimal ref) =
-        match this.GetCustomer(customer.Id) with
-        | Some(customer) ->
-            printfn "Открывается счет для клиента: %s" customer.Name
-            let account = BankAccount(accountId, initialBalance)
-            account :> IAccountManagement
-        | None ->
-            printfn "Клиент с ID %s не найден" customer.Id
-            let account = BankAccount()
-            account :> IAccountManagement
+    (* Работник *)
+    let employee = Employee("Тестовый Тест Тестович", "ул. тестовая", "987-654-3210", 2, "Менеджер", [])
+    
+    (* Работник - назначение новых задач *)
+    let newTasks = ["Проверить баланс аккаунта"; "Обработать платеж"; "Дать визитку"]
+    employee.Tasks <- newTasks
+    printf "Задачи работника %d: %A" employee.EmployeeId employee.Tasks
 
-// Пример использования
-let customer = BankCustomer("Иванов Иван", "12345")
-let employee = BankEmployee("Петров Петр", "67890", true)
-
-let department = BankCustomerDepartment()
-department.AddCustomer customer
-department.AddCustomer employee
-printf "\n"
-
-let initialBalanceClient = ref 1000.0M
-let customerAccount =
-    department.OpenAccountForCustomer customer "A123" initialBalanceClient
-customerAccount.Deposit "A123" 500.0M
-customerAccount.Withdraw "A123" 200.0M
-printf "\n"
-
-let initialBalanceEmployee = ref 2000.0M
-let employeeAccount =
-    department.OpenAccountForCustomer employee "B456" initialBalanceEmployee
-employeeAccount.CloseAccount "B456"
-let mood = employee.isHappy = false
-printf "isHappy: %A" mood
-printf "\n"
+    0
