@@ -1,10 +1,6 @@
 ﻿open System
 open System.Drawing
-open System.Drawing.Drawing2D
-open System.Drawing.Imaging
-open System.IO
 
-// 9. –FF+FF+FF-, F -> F-F-F-F-F
 type Rule = char * char list
 type Grammar = Rule list
 
@@ -45,7 +41,6 @@ let TurtleBitmapVisualizer n delta cmd =
         | 'F' ->
             let (nx, ny, phi) = NewCoord x y phi
             g.DrawLine(pen, (float32) x, (float32) y, (float32) nx, (float32) ny)
-            // printfn "Drawing (%A,%A) -> (%A,%A) [phi=%A]" x y nx ny phi
             (nx, ny, phi)
         | _ -> (x, y, phi)
 
@@ -68,9 +63,8 @@ let implode (xs: char list) =
 
 [<EntryPoint>]
 let main argv =
-
     let gr: Grammar = [ ('F', Array.toList (firstString.ToCharArray())) ]
     let lsys = NApply 5 gr (Array.toList (rule.ToCharArray()))
     let B = TurtleBitmapVisualizer 40.0 (Math.PI / 180.0 * 60.0) lsys
-    B.Save(@"/Users/a-shdv/RiderProjects/FP/Lab6/img/image.jpg")
+    B.Save(@"\\Mac\Home\Downloads\FP\Lab6\img\image34.jpg")
     0

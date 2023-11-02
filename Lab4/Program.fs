@@ -1,4 +1,5 @@
-﻿type Person(name: string, address: string, phoneNumber: string) =
+﻿// Клиентский отдел банка
+type Person(name: string, address: string, phoneNumber: string) =
     member val Name = name with get, set
     member val Address = address with get, set
     member val PhoneNumber = phoneNumber with get, set
