@@ -12,7 +12,6 @@
         <Content Include="files\file4.txt" />
         <Content Include="files\file5.txt" />
         <Content Include="files\file1.txt" />
-        <Content Include="files\output.txt" />
     </ItemGroup>
 
 </Project>

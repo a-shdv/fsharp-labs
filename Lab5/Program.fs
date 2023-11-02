@@ -8,17 +8,18 @@ let reverseWordOrder (line: string) =
 
 let data = 
     Directory.GetFiles("/Users/a-shdv/RiderProjects/FP/Lab5/files", "*.txt")
-    |> Array.Parallel.map (fun filePath -> File.ReadAllText(filePath))
+    |> Array.Parallel.map File.ReadAllText
     |> Array.Parallel.map reverseWordOrder
 
 [<EntryPoint>]
 let main argv =
-    let outputPath = "/Users/a-shdv/RiderProjects/FP/Lab5/files/output.txt"
+    let outputPath = "/Users/a-shdv/RiderProjects/FP/Lab5/files/output1.txt"
     
-    let lines = data |> Array.toList
+    let lines = data |> Array.toSeq
 
-    // Очистка файла
-    File.WriteAllText(outputPath, "")
+    // Очистка файла (перед следующим запуском программы)
+    if File.Exists(outputPath) then
+        File.WriteAllText(outputPath, "")
     
     File.WriteAllLines(outputPath, lines)
 
