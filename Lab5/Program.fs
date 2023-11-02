@@ -1,4 +1,5 @@
-﻿open System.IO
+﻿// Для текстового файла изменить порядок слов на противоположный
+open System.IO
 
 let reverseWordOrder (line: string) =
     let words = line.Split([|' '|])

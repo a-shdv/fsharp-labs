@@ -39,28 +39,34 @@ type Employee(name: string, address: string, phoneNumber: string, employeeId: in
 
 [<EntryPoint>]
 let main argv =
-    (* Клиент *)
+    // Клиент
     let customer =
         Customer("Тестовый Тест Тестович", "ул. Тестовая", "8 (987) 654-43-21", 1, "A123", 0.0m)
 
-    (* Клиент - депозит *)
+    // Клиент - депозит
     let depositBalance = (customer :> ICustomerService).Deposit 100.0m
     customer.Balance <- depositBalance
     printfn "Зачисление..."
     printfn "Счет клиента %d, номер счета %s: %M\n" customer.CustomerId customer.AccountNumber customer.Balance
 
-    (* Клиент - списание *)
+    // Клиент - списание
     let withdrawBalance = (customer :> ICustomerService).Withdraw 25.0m
     customer.Balance <- withdrawBalance
     printfn "Списание..."
     printfn "Счет клиента %d, номер счета %s: %M\n" customer.CustomerId customer.AccountNumber customer.Balance
 
-    (* Работник *)
+    // Работник
     let employee = Employee("Тестовый Тест Тестович", "ул. тестовая", "987-654-3210", 2, "Менеджер", [])
     
-    (* Работник - назначение новых задач *)
-    let newTasks = ["Проверить баланс аккаунта"; "Обработать платеж"; "Дать визитку"]
-    employee.Tasks <- newTasks
-    printf "Задачи работника %d: %A" employee.EmployeeId employee.Tasks
+    // Работник - назначение новых задач
+    let newTask = (employee :> IEmployeeService).AssignTask "Проверить баланс аккаунта" employee.Tasks
+    employee.Tasks <- newTask
+    
+    printf "Задачи работника %d: %A\n" employee.EmployeeId employee.Tasks
+    
+    // Работник - завершение задач
+    let completedTasks = (employee :> IEmployeeService).CompleteTask "Проверить баланс аккаунта" employee.Tasks
+    employee.Tasks <- completedTasks
+    printf "Задачи работника %d: %A\n" employee.EmployeeId employee.Tasks
 
     0
